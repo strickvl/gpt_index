@@ -91,13 +91,11 @@ class SlackReader(BaseReader):
             except SlackApiError as e:
                 if e.response["error"] == "ratelimited":
                     logger.error(
-                        "Rate limit error reached, sleeping for: {} seconds".format(
-                            e.response.headers["retry-after"]
-                        )
+                        f'Rate limit error reached, sleeping for: {e.response.headers["retry-after"]} seconds'
                     )
                     time.sleep(int(e.response.headers["retry-after"]))
                 else:
-                    logger.error("Error parsing conversation replies: {}".format(e))
+                    logger.error(f"Error parsing conversation replies: {e}")
 
         return "\n\n".join(messages_text)
 
@@ -120,9 +118,7 @@ class SlackReader(BaseReader):
                 )
                 conversation_history = result["messages"]
                 # Print results
-                logger.info(
-                    "{} messages found in {}".format(len(conversation_history), id)
-                )
+                logger.info(f"{len(conversation_history)} messages found in {id}")
                 result_messages.extend(
                     self._read_message(channel_id, message["ts"])
                     for message in conversation_history
@@ -134,13 +130,11 @@ class SlackReader(BaseReader):
             except SlackApiError as e:
                 if e.response["error"] == "ratelimited":
                     logger.error(
-                        "Rate limit error reached, sleeping for: {} seconds".format(
-                            e.response.headers["retry-after"]
-                        )
+                        f'Rate limit error reached, sleeping for: {e.response.headers["retry-after"]} seconds'
                     )
                     time.sleep(int(e.response.headers["retry-after"]))
                 else:
-                    logger.error("Error parsing conversation replies: {}".format(e))
+                    logger.error(f"Error parsing conversation replies: {e}")
 
         return (
             "\n\n".join(result_messages)
