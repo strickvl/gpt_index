@@ -52,7 +52,7 @@ class GPTTreeIndexBuilder:
             document=document, text_splitter=self._text_splitter
         )
         text_chunks = [text_split.text_chunk for text_split in text_splits]
-        doc_nodes = {
+        return {
             (start_idx + i): Node(
                 text=t,
                 index=(start_idx + i),
@@ -62,7 +62,6 @@ class GPTTreeIndexBuilder:
             )
             for i, t in enumerate(text_chunks)
         }
-        return doc_nodes
 
     def build_from_text(
         self,
